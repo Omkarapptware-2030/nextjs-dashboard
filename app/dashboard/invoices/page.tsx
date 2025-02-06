@@ -11,16 +11,22 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Invoices",
 };
+
+// Helper function to fetch and resolve search params before rendering the page
+async function getSearchParams(
+  search?: Promise<{ query?: string; page?: string }>
+) {
+  return search ? await search : {};
+}
+
 export default async function Page(props: {
-  search?: Promise<{
-    query?: string;
-    page?: string;
-  }>;
+  search?: Promise<{ query?: string; page?: string }>;
 }) {
-  const search = await props.search;
-  const query = search?.query || "";
-  const currentPage = Number(search?.page) || 1;
+  const resolvedSearch = await getSearchParams(props.search);
+  const query = resolvedSearch.query || "";
+  const currentPage = Number(resolvedSearch.page) || 1;
   const totalPages = await fetchInvoicesPages(query);
+
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
