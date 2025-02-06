@@ -11,7 +11,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Invoices",
 };
-export async function Page(props: {
+export default async function Page(props: {
   search?: Promise<{
     query?: string;
     page?: string;
